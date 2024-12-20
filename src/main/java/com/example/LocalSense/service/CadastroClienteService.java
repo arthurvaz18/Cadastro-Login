@@ -27,11 +27,18 @@ public class CadastroClienteService {
         return cadastroClienteRepository.findAll();
     }
 
+    public CadastroCliente buscarPorEmail(String email) {
+        return cadastroClienteRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado com o email: " + email));
+    }
+
     public CadastroCliente atualizarCliente(Integer cpf, CadastroCliente clienteAtualizado) {
-        CadastroCliente clienteExistente = buscarPorCpf(cpf); // Reutiliza o método buscarPorcpf
+        CadastroCliente clienteExistente = buscarPorCpf(cpf);
         clienteExistente.setNomeCompleto(clienteAtualizado.getNomeCompleto());
         clienteExistente.setEmail(clienteAtualizado.getEmail());
-        // Atualize outros campos necessários...
+        clienteExistente.setSenha(clienteAtualizado.getSenha());
+        clienteExistente.setTelefone(clienteAtualizado.getTelefone());
+
         return cadastroClienteRepository.save(clienteExistente);
     }
 
